@@ -2,7 +2,8 @@
 
 import React, { useState } from "react"
 import {motion, AnimatePresence} from "framer-motion"
-import { Menu, MessageCircleMore, X } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa"
+import { Menu, X } from "lucide-react"
 import {useHeader} from "../hooks/useHeader"
 import Image from "next/image"
 import Link from "next/link"
@@ -16,17 +17,18 @@ function WhatsAppButton({ className = '' }: { className?: string }) {
       aria-label="Abrir conversa no WhatsApp"
       target="_blank"
       rel="noopener noreferrer">
-      <MessageCircleMore size={18} />
-      WhatsApp
+      <FaWhatsapp size={18} />
+      Agendar no WhatsApp
     </Link>
   );
 }
 
 const navLinks = [
-      { href: "#inicio", label: "Início" },
-      { href: "#sobre", label: "Sobre" },
-      { href: "#servicos", label: "Serviços" },
-      { href: "#contato", label: "Contato" },
+    { href: "#inicio", label: "Início" },
+    { href: "#sobre", label: "Sobre" },
+    { href: "#servicos", label: "Serviços" },
+    { href: "#agendamento", label: "Agendar" },
+    { href: "#contato", label: "Contato" },
 ]
 
 export default function Header(){
@@ -62,12 +64,13 @@ export default function Header(){
                     />
                 </a>
                 <div className="hidden md:flex items-center gap-8">
-                    {renderNavLinks("text-[#CAD8E1] hover:text-[#37699E] transition-colors text-base md:text-sm tracking-wide uppercase")}
+                    {renderNavLinks("text-[#CAD8E1] hover:text-white transition-colors text-base md:text-sm tracking-wide uppercase")}
                 </div>
-                <div className="hidden md:flex items-center gap-6">
-                    <WhatsAppButton className="bg-white text-[#37699e] px-4 py-2 rounded-md font-semibold hover:bg-[#cad8e1] transition"/>
+                <div className="hidden md:flex items-center gap-4">
+                    <WhatsAppButton className="bg-[#25D366] text-white px-3 py-1.5 rounded-md font-medium text-sm hover:bg-[#1DA851] transition shadow-md"/>
                 </div>
-                <div className="md:hidden">
+                <div className="md:hidden flex items-center gap-3">
+                    <WhatsAppButton className="bg-[#25D366] text-white px-3 py-1.5 rounded-md font-medium text-sm hover:bg-[#1DA851] transition shadow-md" />
                     <motion.button
                     whileTap={{ scale: 0.95 }}
                     animate={{ rotate: isMenuOpen ? 90 : 0 }}
@@ -88,7 +91,6 @@ export default function Header(){
                 className="md:hidden bg-[#2A4C68] overflow-hidden">
                     <nav className="flex flex-col gap-4 px-6 py-4 border-t border-[#37699E]">
                         {renderNavLinks("text-[#cad8e1] hover:text-white text-base text-base md:text-sm tracking-wide uppercase transition-colors")}
-                        <WhatsAppButton className="mt-4 bg-[#25D366] text-white px-4 py-2 rounded-md font-semibold text-center hover:bg-[#1DA851] transition duration-300 shadow-lg"/>
                     </nav>
                 </motion.div>
             )}
