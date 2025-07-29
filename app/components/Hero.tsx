@@ -5,7 +5,7 @@ import { Dog, PawPrint, Syringe, TestTube2 } from "lucide-react"
 
 export default function Hero() {
     return (
-        <section className="bg-[#F5F9FB] py-12 pt-24 md:py-24">
+        <section id="inicio" className="bg-[#F5F9FB] py-12 pt-24 md:py-24">
             <div className="max-w-6xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12">
                 <div className="flex-1 text-center md:text-left">
                     <motion.h1
