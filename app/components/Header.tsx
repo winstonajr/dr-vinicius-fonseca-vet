@@ -11,7 +11,7 @@ import Link from "next/link"
 function WhatsAppButton({ className = '' }: { className?: string }) {
   return (
     <Link
-      href="https://wa.me/5513991298550"
+      href="https://api.whatsapp.com/send?phone=5513991298550&text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta."
       className={`flex items-center gap-2 text-sm duration-300 hover:scale-105 focus:ring-2 ring-[#25D366] shadow-md transition-transform
  ${className}`}
       aria-label="Abrir conversa no WhatsApp"
