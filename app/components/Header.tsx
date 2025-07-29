@@ -18,7 +18,7 @@ function WhatsAppButton({ className = '' }: { className?: string }) {
       target="_blank"
       rel="noopener noreferrer">
       <FaWhatsapp size={18} />
-      Agendar no WhatsApp
+      Agendar agora!
     </Link>
   );
 }
