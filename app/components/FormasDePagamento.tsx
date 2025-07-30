@@ -34,7 +34,6 @@ export default function FormasDePagamento() {
           <div>
             <h3 className="font-semibold">Cartão</h3>
             <p>Cartão aceito (crédito/débito).</p>
-            <small className="text-xs text-gray-400 italic">Consulte para mais informações.</small>
           </div>
         </div>
       </div>

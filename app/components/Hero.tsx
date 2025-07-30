@@ -49,7 +49,7 @@ export default function Hero() {
                 </div>
                 <div className="flex-1">
                     <Image
-                        src="/default.jpg"
+                        src="/hero.jpg"
                         alt="Vinícius Fonseca"
                         width={500}
                         height={500}

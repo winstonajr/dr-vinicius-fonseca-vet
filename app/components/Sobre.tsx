@@ -37,7 +37,7 @@ export default function Sobre() {
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}>
                     <Image
-                        src="/default.jpg"
+                        src="/perfil.jpg"
                         alt="Sobre Vinícius Fonseca"
                         priority
                         width={500}
