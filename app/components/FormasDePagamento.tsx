@@ -12,9 +12,9 @@ export default function FormasDePagamento() {
       <div className="flex flex-col sm:flex-row justify-center gap-10 text-[#2A4C68] text-lg font-medium">
         {/* Pix */}
         <div className="flex items-center gap-4">
-          <FaPix className="text-3xl text-[#25D366]" />
+          <FaPix className="text-3xl text-[#2A4C68]" />
           <div>
-            <h3 className="font-semibold text-[#25D366]">Pix</h3>
+            <h3 className="font-semibold text-[#2A4C68]">Pix</h3>
             <p>Pagamento rápido e seguro via chave Pix.</p>
           </div>
         </div>
