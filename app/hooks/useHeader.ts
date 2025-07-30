@@ -10,7 +10,6 @@ export function useHeader(setIsMenuOpen: (value: boolean) => void) {
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: "smooth" })
         }
-        window.history.pushState(null, "", href)
       }, 300)
     },
     [setIsMenuOpen]
