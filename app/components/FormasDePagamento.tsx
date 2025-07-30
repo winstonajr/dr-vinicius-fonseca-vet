@@ -29,11 +29,11 @@ export default function FormasDePagamento() {
         </div>
 
         {/* Cartão (crédito/débito) */}
-        <div className="flex items-center gap-4 opacity-60 cursor-not-allowed select-none">
+        <div className="flex items-center gap-4">
           <FaCreditCard className="text-3xl text-[#7CA6C7]" />
           <div>
             <h3 className="font-semibold">Cartão</h3>
-            <p>Cartão aceito (crédito/débito) no momento não disponível.</p>
+            <p>Cartão aceito (crédito/débito).</p>
             <small className="text-xs text-gray-400 italic">Consulte para mais informações.</small>
           </div>
         </div>
