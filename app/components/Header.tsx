@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState } from "react"
+import { useHideOnScroll } from "../hooks/useHideOnScroll"
 import {motion, AnimatePresence} from "framer-motion"
-import { FaWhatsapp } from "react-icons/fa"
-import { Menu, X } from "lucide-react"
 import {useHeader} from "../hooks/useHeader"
+import { FaWhatsapp } from "react-icons/fa"
+import React, { useState } from "react"
+import { Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -33,7 +34,7 @@ const navLinks = [
 
 export default function Header(){
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+    const isHidden = useHideOnScroll()
     const {handleNavClick} = useHeader(setIsMenuOpen)
 
     function renderNavLinks(className: string) {
@@ -50,7 +51,11 @@ export default function Header(){
         })}
 
     return(
-        <header className="bg-[#37699e]/80 backdrop-blur-md shadow-lg text-[#cad8e1] fixed top-0 left-0 w-full z-50">
+        <motion.header 
+            className="bg-[#37699e]/80 backdrop-blur-md shadow-lg text-[#cad8e1] fixed top-0 left-0 w-full z-50"
+            initial={false}
+            animate={{ y: isHidden ? "-100%" : 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}>
             <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
                 <a 
                 href="#" 
@@ -95,6 +100,6 @@ export default function Header(){
                 </motion.div>
             )}
             </AnimatePresence>
-        </header>
+        </motion.header>
     )
 }
