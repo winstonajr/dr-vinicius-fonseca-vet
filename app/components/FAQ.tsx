@@ -60,16 +60,16 @@ export default function FAQ() {
           return (
             <div
               key={i}
-              className="bg-white rounded-md shadow-sm border border-[#CAD8E1]"
+              className="bg-white rounded-md shadow-sm border border-[#CAD8E1] overflow-hidden"
             >
               <button
                 onClick={() => toggleIndex(i)}
-                className="w-full flex justify-between items-center px-6 py-4 text-left font-semibold text-[#2A4C68] hover:text-[#25D366] focus:outline-none"
+                className="w-full flex justify-between items-center px-6 py-4 text-left font-semibold text-[#2A4C68] hover:text-[#25D366] focus:outline-none transition-colors"
                 aria-expanded={isOpen}
                 aria-controls={`faq-panel-${i}`}
                 id={`faq-header-${i}`}
               >
-                {item.pergunta}
+                <span>{item.pergunta}</span>
                 {isOpen ? (
                   <ChevronUp size={24} className="text-[#25D366]" />
                 ) : (
@@ -84,17 +84,21 @@ export default function FAQ() {
                     id={`faq-panel-${i}`}
                     role="region"
                     aria-labelledby={`faq-header-${i}`}
-                    initial="collapsed"
-                    animate="open"
-                    exit="collapsed"
-                    variants={{
-                      open: { height: 'auto', opacity: 1 },
-                      collapsed: { height: 0, opacity: 0 },
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{
+                      duration: 0.4,
+                      ease: [0.25, 0.8, 0.25, 1], // curva de bezier suave
                     }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="px-6 pb-6 overflow-hidden text-[#1B2E41]"
+                    className="px-6 pb-6 text-[#1B2E41]"
                   >
-                    <p>{item.resposta}</p>
+                    <motion.p
+                      layout
+                      className="leading-relaxed text-sm sm:text-base"
+                    >
+                      {item.resposta}
+                    </motion.p>
                   </motion.div>
                 )}
               </AnimatePresence>
