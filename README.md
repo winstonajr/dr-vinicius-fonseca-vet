@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SPA VFMV
 
-## Getting Started
+Este é o repositório do site institucional desenvolvido para **Vinícius Andrade da Fonseca João**, médico veterinário. O projeto é uma Single Page Application (SPA) moderna, responsiva e elegante, construída com:
 
-First, run the development server:
+- [Next.js 15](https://nextjs.org/)
+- [Tailwind CSS 4](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Lucide React](https://lucide.dev/)
+- [Keen Slider](https://keen-slider.io/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+
+## ✨ Destaques do Projeto
+
+- Design moderno com animações suaves e UI personalizada.
+- Componente de galeria com carrossel automático.
+- Totalmente responsivo e otimizado para dispositivos móveis.
+- Integração com WhatsApp e funcionalidades como agendamento e FAQ.
+
+## 📦 Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/spa-vfmv.git
+cd spa-vfmv
+
+# Instale as dependências
+npm install
+```
+
+## 🚀 Desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O projeto será executado em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Scripts Disponíveis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `dev`: Executa o projeto em modo de desenvolvimento com Turbopack.
+- `build`: Gera a build de produção.
+- `start`: Inicia o servidor Next em produção.
+- `lint`: Executa a análise estática de código.
 
-## Learn More
+## 🧱 Estrutura do Projeto
 
-To learn more about Next.js, take a look at the following resources:
+```
+spa-vfmv/
+├── public/
+├── app/
+│   ├── components/
+│   ├── hooks/
+│   └── ...
+├── next.config.js
+├── package.json
+└── README.md
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💡 Observações
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Este projeto utiliza o **Turbopack**, o novo bundler do Next.js.
+- Certifique-se de estar utilizando **Node 20+** e **npm 9+**.
 
-## Deploy on Vercel
+## 📬 Contato
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Desenvolvido por [Winston A Jr](https://www.linkedin.com/in/winstonajr/).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+> _"So whether you eat or drink or whatever you do, do it all for the glory of God" - 1 Corinthians 10:31_ 

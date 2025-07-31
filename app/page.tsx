@@ -1,12 +1,13 @@
-import Agendamento from "./components/Agendamento";
 import AreaDeAtendimento from "./components/AreaDeAtendimento";
-import Contato from "./components/Contato";
-import Depoimentos from "./components/Depoimentos";
-import FAQ from "./components/FAQ";
 import FormasDePagamento from "./components/FormasDePagamento";
-import Hero from "./components/Hero";
+import Agendamento from "./components/Agendamento";
+import Depoimentos from "./components/Depoimentos";
 import Servicos from "./components/Servicos";
+import Galeria from "./components/Galeria";
+import Contato from "./components/Contato";
 import Sobre from "./components/Sobre";
+import Hero from "./components/Hero";
+import FAQ from "./components/FAQ";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Servicos/>
       <AreaDeAtendimento/>
       <Depoimentos/>
+      <Galeria/>
       <Agendamento/>
       <FormasDePagamento/>
       <FAQ/>
