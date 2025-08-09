@@ -1,5 +1,6 @@
 'use client'
-import { motion } from 'framer-motion'
+import React from 'react'
+import { motion, Variants } from 'framer-motion'
 import {
   Syringe,
   Stethoscope,
@@ -9,99 +10,115 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 
-const servicos = [
+// --- DADOS E CONSTANTES ---
+// MUDANÇA 1: Passando apenas a referência do componente do ícone, não o JSX.
+const servicos: { icon: React.ElementType; titulo: string; descricao: string }[] = [
   {
-    titulo: 'Consulta Clínica',
-    descricao: 'Avaliação completa no conforto do seu lar para cães e gatos.',
-    icon: <Stethoscope size={40} aria-label="Ícone de estetoscópio" className="text-[#2A4C68]" />,
+    icon: Stethoscope,
+    titulo: 'Consulta Clínica Completa',
+    descricao: 'Avaliação detalhada da saúde do seu pet, tudo no conforto e segurança do seu lar.',
   },
   {
+    icon: Syringe,
     titulo: 'Vacinação Segura',
-    descricao: 'Aplicação de vacinas com controle de temperatura e transporte adequado.',
-    icon: <Syringe size={40} aria-label="Ícone de seringa" className="text-[#2A4C68]" />,
+    descricao: 'Protocolos de imunização atualizados com vacinas de alta qualidade e transporte refrigerado.',
   },
   {
+    icon: ClipboardList,
     titulo: 'Coleta de Exames',
-    descricao: 'Coletas laboratoriais realizadas no domicílio com higiene e precisão.',
-    icon: <ClipboardList size={40} aria-label="Ícone de lista de clipboard" className="text-[#2A4C68]" />,
+    descricao: 'Coleta de sangue, urina e outros materiais para análise laboratorial, com o mínimo de estresse.',
   },
   {
+    icon: ShieldCheck,
     titulo: 'Curativos e Medicações',
-    descricao: 'Cuidados com feridas, curativos e aplicação de medicamentos.',
-    icon: <ShieldCheck size={40} aria-label="Ícone de escudo com cheque" className="text-[#2A4C68]" />,
+    descricao: 'Tratamento de feridas, troca de curativos e administração precisa de medicamentos prescritos.',
   },
   {
-    titulo: 'Fluidoterapia',
-    descricao: 'Terapia de reidratação e suporte clínico por via intravenosa ou subcutânea.',
-    icon: <Droplet size={40} aria-label="Ícone de gota d’água" className="text-[#2A4C68]" />,
+    icon: Droplet,
+    titulo: 'Fluidoterapia de Suporte',
+    descricao: 'Terapia de reidratação para recuperação e suporte clínico em casos de desidratação.',
   },
   {
+    icon: PawPrint,
     titulo: 'Orientações e Bem-estar',
-    descricao: 'Dicas sobre alimentação, comportamento e rotina do seu pet.',
-    icon: <PawPrint size={40} aria-label="Ícone de pata" className="text-[#2A4C68]" />,
+    descricao: 'Aconselhamento sobre nutrição, comportamento e rotinas para uma vida longa e saudável.',
   },
 ]
 
+// --- ANIMAÇÕES ---
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+}
+
+
+// MUDANÇA 2: Criação de um subcomponente para o Card de Serviço
+function ServiceCard({ icon: Icon, titulo, descricao }: (typeof servicos)[0]) {
+  return (
+    <motion.li
+      className="flex cursor-default flex-col items-center rounded-2xl bg-[#F8FAFC] p-8 text-center shadow-sm transition-all duration-300 hover:bg-white hover:shadow-lg hover:-translate-y-2"
+      variants={itemVariants}
+    >
+      <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#E9F2F9]">
+        <Icon className="h-8 w-8 text-[#2A4C68]" />
+      </div>
+      <h3 className="mb-3 text-xl font-bold text-[#2A4C68]">{titulo}</h3>
+      <p className="text-base leading-relaxed text-[#5C86B5]">{descricao}</p>
+    </motion.li>
+  )
+}
+
+
+// --- COMPONENTE PRINCIPAL ---
 export default function Servicos() {
   return (
-    <section
-      id="servicos"
-      aria-labelledby="servicos-title"
-      className="bg-white py-16 px-4 sm:px-8 lg:px-12"
-    >
-      <div className="max-w-7xl mx-auto text-center">
-        <motion.h2
-          id="servicos-title"
-          className="text-3xl sm:text-4xl font-extrabold text-[#2A4C68] mb-6 tracking-tight"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Serviços oferecidos
-        </motion.h2>
-
-        <p className="text-[#37699E] max-w-3xl mx-auto mb-16 text-base sm:text-lg leading-relaxed">
-          Atendimento veterinário domiciliar especializado em cães e gatos. Cuidado técnico e humanizado para o bem-estar do seu pet.
-        </p>
+    <section id="servicos" className="bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <h2 className="text-3xl font-extrabold text-[#2A4C68] sm:text-4xl">
+            Serviços pensados para o seu melhor amigo
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-[#777]">
+            Ofereço um cuidado completo e humanizado, combinando a precisão técnica com a conveniência do atendimento domiciliar para cães e gatos.
+          </p>
+        </motion.div>
 
         <motion.ul
-          role="list"
-          className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.18 } },
-          }}
+          viewport={{ once: true, amount: 0.1 }}
+          variants={containerVariants}
         >
-          {servicos.map((servico, index) => (
-            <motion.li
-              key={index}
-              role="listitem"
-              className="bg-[#F5F9FB] rounded-3xl p-8 shadow-md hover:shadow-xl transition-shadow transform hover:scale-[1.03] cursor-default flex flex-col items-center text-center"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 },
-              }}
-            >
-              <div className="mb-5">{servico.icon}</div>
-              <h3 className="text-xl font-semibold text-[#2A4C68] mb-3">{servico.titulo}</h3>
-              <p className="text-[#37699E] text-base leading-relaxed">{servico.descricao}</p>
-            </motion.li>
+          {servicos.map((servico) => (
+            <ServiceCard key={servico.titulo} {...servico} />
           ))}
         </motion.ul>
 
-        <div className="mt-16">
+        {/* MUDANÇA 3: Adicionando contexto ao CTA final */}
+        <motion.div className="mt-20" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
+          <h3 className="text-2xl font-bold text-[#2A4C68]">Pronto para cuidar do seu pet?</h3>
+          <p className="mx-auto mt-2 max-w-xl text-base text-[#777]">
+            Clique no botão abaixo para agendar uma consulta ou tirar suas dúvidas diretamente pelo WhatsApp.
+          </p>
           <a
             href="https://wa.me/5513991298550"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Agendar atendimento pelo WhatsApp"
-            className="inline-block bg-[#25D366] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-green-600 hover:shadow-xl transition duration-300"
+            aria-label="Agendar consulta pelo WhatsApp"
+            className="mt-8 inline-block rounded-full bg-[#4CAF50] px-8 py-3.5 text-lg font-semibold text-white shadow-lg transition-transform duration-300 hover:scale-105"
           >
-            Agendar atendimento
+            Agendar Consulta
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

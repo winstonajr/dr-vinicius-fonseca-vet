@@ -1,70 +1,113 @@
 "use client"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { Dog, PawPrint, Syringe, TestTube2 } from "lucide-react"
+import React from "react"
 
-const serviceIcons = [
-  { icon: PawPrint, label: "Consulta" },
-  { icon: Syringe, label: "Vacinação" },
-  { icon: TestTube2, label: "Exame" },
-  { icon: Dog, label: "Cães & Gatos" },
+// --- DADOS E CONSTANTES ---
+const serviceIcons: { icon: React.ElementType; label: string }[] = [
+  { icon: PawPrint, label: "Consultas" },
+  { icon: Syringe, label: "Vacinas" },
+  { icon: TestTube2, label: "Exames" },
+  { icon: Dog, label: "Cães e Gatos" },
 ]
 
+// --- ANIMAÇÕES ---
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+}
+
+// --- SUBCOMPONENTES ---
+function ServiceHighlight({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
+  // A animação deste componente agora é controlada pelo `variants` do seu container pai.
+  return (
+    <div className="flex flex-col items-center gap-2 text-center">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-md text-[#5C86B5]">
+        <Icon className="h-7 w-7" />
+      </div>
+      <span className="text-sm font-medium text-[#777777]">{label}</span>
+    </div>
+  )
+}
+
+// --- COMPONENTE PRINCIPAL ---
 export default function Hero() {
   return (
-    <section id="inicio" className="bg-[#F5F9FB] py-12 pt-24 md:py-24">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12">
-        {/* Texto */}
-        <div className="flex-1 text-center md:text-left">
+    <section id="inicio" className="overflow-hidden bg-[#E9F2F9] py-20 md:py-28">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
+        
+        {/* Coluna de Texto */}
+        <motion.div
+          className="flex flex-col items-center text-center md:items-start md:text-left order-2 md:order-1" // <-- MUDANÇA 1: Ordem alterada
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={containerVariants}
+        >
           <motion.h1
-            className="text-3xl md:text-5xl font-bold text-[#2A4C68] mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            className="font-bold text-3xl text-[#2A4C68] md:text-4xl lg:text-5xl"
+            variants={itemVariants}
           >
             Cuidado profissional no conforto do seu lar
           </motion.h1>
 
           <motion.p
-            className="text-[#37699E] text-lg md:text-xl mb-6"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            viewport={{ once: true }}
+            className="mt-4 max-w-xl text-lg text-[#777777] md:text-xl leading-relaxed"
+            variants={itemVariants}
           >
-            Veterinário com atendimento domiciliar em São Vicente, Santos, Praia Grande e Cubatão.
+            Atendimento veterinário domiciliar em São Vicente, Santos, Praia Grande e Cubatão, com a dedicação e o carinho que seu pet merece.
           </motion.p>
 
-          <motion.a
-            className="inline-block bg-[#25D366] text-white font-semibold px-6 py-3 rounded-full shadow-md hover:scale-105 transition"
-            href="https://api.whatsapp.com/send?phone=5513991298550&text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta."
-            whileTap={{ scale: 0.95 }}
+          <motion.div variants={itemVariants} className="mt-8">
+            <motion.a
+              className="inline-block rounded-full bg-[#4CAF50] px-8 py-3.5 font-medium text-white shadow-md transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2 focus:ring-offset-[#E9F2F9]"
+              href="https://api.whatsapp.com/send?phone=5513991298550&text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta."
+              target="_blank"
+              rel="noopener noreferrer"
+              whileTap={{ scale: 0.95 }}
+            >
+              Agendar Consulta
+            </motion.a>
+          </motion.div>
+          
+          {/* MUDANÇA 2: Ícones de serviço movidos para cá */}
+          <motion.div
+            className="mt-12 grid w-full max-w-md grid-cols-2 gap-y-6 gap-x-4 md:grid-cols-4"
+            variants={itemVariants}
           >
-            Agendar Consulta
-          </motion.a>
-
-          <div className="flex justify-center md:justify-start gap-6 mt-10 text-[#7CA6C7]">
-            {serviceIcons.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex flex-col items-center">
-                <Icon size={32} />
-                <span className="mt-2 text-sm">{label}</span>
-              </div>
+            {serviceIcons.map((service) => (
+              <ServiceHighlight key={service.label} {...service} />
             ))}
-          </div>
-        </div>
+          </motion.div>
 
-        {/* Imagem */}
-        <div className="flex-1">
+        </motion.div>
+
+        {/* Coluna da Imagem */}
+        <motion.div
+          className="relative rounded-xl overflow-hidden shadow-xl order-1 md:order-2" // <-- MUDANÇA 1: Ordem alterada
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <Image
-            src="/hero.jpg"
-            alt="Veterinário Vinícius atendendo pet em domicílio"
-            width={500}
-            height={500}
-            className="rounded-xl shadow-lg"
-            loading="lazy"
+            src="/hero01.jpg"
+            alt="Veterinário Vinícius atendendo um adorável pet em casa"
+            width={600}
+            height={600}
+            className="aspect-square object-cover"
+            priority
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   )

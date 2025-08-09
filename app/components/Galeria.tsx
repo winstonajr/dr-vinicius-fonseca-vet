@@ -1,147 +1,181 @@
-'use client';
+'use client'
 
-import 'keen-slider/keen-slider.min.css';
-import { useKeenSlider } from 'keen-slider/react';
-import Image from 'next/image';
-import { useState, useEffect, useCallback } from 'react';
-import { Camera, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider, KeenSliderPlugin, KeenSliderInstance } from 'keen-slider/react'
+import Image from 'next/image'
+import React, { useState, MutableRefObject } from 'react'
+import { Camera, ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion, Variants } from 'framer-motion'
 
+// --- DADOS E CONSTANTES ---
 const images = [
-  { src: '/perfil.jpg', alt: 'Atendimento domiciliar com pet 1' },
-  { src: '/default.jpg', alt: 'Atendimento domiciliar com pet 2' },
-  { src: '/default.jpg', alt: 'Atendimento domiciliar com pet 3' },
-  { src: '/default.jpg', alt: 'Atendimento domiciliar com pet 4' },
-  { src: '/default.jpg', alt: 'Atendimento domiciliar com pet 5' },
-];
+  { src: '/img1.jpg', alt: 'Gato sendo examinado durante consulta domiciliar' },
+  { src: '/img2.jpg', alt: 'Cachorro recebendo cuidado veterinário em casa' },
+  { src: '/img3.jpg', alt: 'Cão sendo examinado durante consulta domiciliar' },
+  { src: '/img4.jpg', alt: 'Veterinário aplicando vacina em um pet' },
+]
 
-export default function GalleryCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+// --- PLUGINS E ANIMAÇÕES ---
+const AutoplayPlugin: KeenSliderPlugin = (slider) => {
+  let timeout: ReturnType<typeof setTimeout>
+  let mouseOver = false
+  function clearNextTimeout() {
+    clearTimeout(timeout)
+  }
+  function nextTimeout() {
+    clearTimeout(timeout)
+    if (mouseOver) return
+    timeout = setTimeout(() => {
+      slider.next()
+    }, 4000)
+  }
+  slider.on('created', () => {
+    slider.container.addEventListener('mouseover', () => {
+      mouseOver = true
+      clearNextTimeout()
+    })
+    slider.container.addEventListener('mouseout', () => {
+      mouseOver = false
+      nextTimeout()
+    })
+    nextTimeout()
+  })
+  slider.on('dragStarted', clearNextTimeout)
+  slider.on('animationEnded', nextTimeout)
+  slider.on('updated', nextTimeout)
+}
 
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
-    loop: true,
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-    breakpoints: {
-      '(min-width: 768px)': {
-        slides: { perView: 2, spacing: 15 },
+const itemVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } },
+}
+
+// --- SUBCOMPONENTES ---
+function Arrow(props: {
+  disabled?: boolean // <-- CORREÇÃO 1: 'disabled' agora é opcional.
+  left?: boolean
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+}) {
+  const disabledClass = props.disabled ? ' opacity-50 cursor-not-allowed' : ''
+  return (
+    <button
+      onClick={props.onClick}
+      disabled={props.disabled}
+      aria-label={props.left ? 'Slide anterior' : 'Próximo slide'}
+      className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[#2A4C68] shadow-md transition hover:bg-white hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#4CAF50] ${
+        props.left ? 'left-4' : 'right-4'
+      } ${disabledClass}`}
+    >
+      {props.left ? <ChevronLeft className="h-6 w-6" /> : <ChevronRight className="h-6 w-6" />}
+    </button>
+  )
+}
+
+function Dots({
+  instanceRef,
+  currentSlide,
+}: {
+  instanceRef: MutableRefObject<KeenSliderInstance | null>
+  currentSlide: number
+}) {
+  const slides = instanceRef.current?.track.details.slides || []
+  return (
+    <div className="mt-6 flex justify-center gap-2.5">
+      {slides.map((_, idx) => (
+        <button
+          key={idx}
+          onClick={() => instanceRef.current?.moveToIdx(idx)}
+          aria-label={`Ir para o slide ${idx + 1}`}
+          className={`h-3 w-3 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#E9F2F9] focus:ring-[#4CAF50] ${
+            currentSlide === idx ? 'bg-[#2A4C68]' : 'bg-[#CAD8E1]'
+          }`}
+        />
+      ))}
+    </div>
+  )
+}
+
+// --- COMPONENTE PRINCIPAL ---
+export default function Galeria() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [loaded, setLoaded] = useState(false)
+
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      initial: 0,
+      loop: true,
+      slideChanged: (s) => setCurrentSlide(s.track.details.rel),
+      created: () => setLoaded(true),
+      breakpoints: {
+        '(min-width: 768px)': { slides: { perView: 2, spacing: 16 } },
+        '(min-width: 1024px)': { slides: { perView: 3, spacing: 20 } },
       },
-      '(min-width: 1024px)': {
-        slides: { perView: 3, spacing: 20 },
-      },
+      slides: { perView: 1.2, spacing: 12 },
     },
-    slides: { perView: 1, spacing: 10 },
-  });
-
-  // Autoplay
-  useEffect(() => {
-    const interval = setInterval(() => {
-      instanceRef.current?.next();
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [instanceRef]);
-
-  // Navegação manual
-  const handlePrev = useCallback(() => {
-    instanceRef.current?.prev();
-  }, [instanceRef]);
-
-  const handleNext = useCallback(() => {
-    instanceRef.current?.next();
-  }, [instanceRef]);
+    [AutoplayPlugin]
+  )
 
   return (
-    <section
-      id="galeria"
-      className="bg-[#F5F9FB] py-16 px-4"
-      aria-label="Galeria de atendimentos veterinários"
-    >
-      <div className="max-w-6xl mx-auto text-center">
-        {/* Título */}
+    <section id="galeria" className="bg-[#E9F2F9] py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex items-center justify-center gap-2 mb-6 text-[#2A4C68]"
         >
-          <Camera className="w-6 h-6" aria-hidden="true" />
-          <h2 className="text-2xl sm:text-3xl font-bold">Galeria de Atendimentos</h2>
+          <div className="mb-4 inline-flex items-center gap-3 rounded-full px-4 py-2">
+            <Camera className="h-6 w-6 text-[#2A4C68]" />
+            <h2 className="text-2xl font-bold text-[#2A4C68] sm:text-3xl">Nossos Pacientes</h2>
+          </div>
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#777]">
+            Alguns momentos que capturam a essência do nosso trabalho: cuidado, profissionalismo e muito carinho.
+          </p>
         </motion.div>
 
-        {/* Descrição */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-[#37699E] max-w-2xl mx-auto mb-10 text-sm sm:text-base"
+        <motion.div
+          className="relative mt-16"
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
         >
-          Veja alguns momentos dos atendimentos — carinho, profissionalismo e amor pelos pets.
-        </motion.p>
-
-        {/* Slider */}
-        <div className="relative">
           <div ref={sliderRef} className="keen-slider">
             {images.map(({ src, alt }, index) => (
-              <motion.div
-                key={index}
-                className="keen-slider__slide rounded-xl overflow-hidden border border-[#7CA6C7] shadow-sm"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-              >
+              <div key={index} className="keen-slider__slide overflow-hidden rounded-2xl">
                 <Image
                   src={src}
                   alt={alt}
                   width={800}
-                  height={500}
-                  priority={index === 0}
-                  className="w-full aspect-[4/3] sm:aspect-[16/9] object-cover"
+                  height={600}
+                  className="h-full w-full object-cover shadow-lg"
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
 
-          {/* Controles */}
-          <button
-            onClick={handlePrev}
-            aria-label="Slide anterior"
-            className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-[#2A4C68] bg-opacity-70 hover:bg-opacity-90 text-white p-2 transition focus:outline-none focus:ring-2 focus:ring-[#25D366] z-10"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={handleNext}
-            aria-label="Próximo slide"
-            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-[#2A4C68] bg-opacity-70 hover:bg-opacity-90 text-white p-2 transition focus:outline-none focus:ring-2 focus:ring-[#25D366] z-10"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-        </div>
+          {loaded && instanceRef.current && (
+            <>
+              {/* CORREÇÃO 2: A lógica do onClick foi reescrita */}
+              <Arrow
+                onClick={(e) => {
+                  e.stopPropagation()
+                  instanceRef.current?.prev()
+                }}
+                left
+              />
+              <Arrow
+                onClick={(e) => {
+                  e.stopPropagation()
+                  instanceRef.current?.next()
+                }}
+              />
+            </>
+          )}
+        </motion.div>
 
-        {/* Dots */}
-        <div
-          className="flex justify-center gap-2 mt-6"
-          role="tablist"
-          aria-label="Navegação da galeria"
-        >
-          {images.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => instanceRef.current?.moveToIdx(idx)}
-              aria-selected={currentSlide === idx}
-              role="tab"
-              aria-label={`Ir para slide ${idx + 1}`}
-              tabIndex={currentSlide === idx ? 0 : -1}
-              className={`w-3.5 h-3.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] ${
-                currentSlide === idx ? 'bg-[#2A4C68]' : 'bg-[#CAD8E1]'
-              }`}
-            />
-          ))}
-        </div>
+        {loaded && instanceRef.current && <Dots instanceRef={instanceRef} currentSlide={currentSlide} />}
       </div>
     </section>
-  );
+  )
 }

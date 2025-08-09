@@ -1,7 +1,7 @@
 import AreaDeAtendimento from "./components/AreaDeAtendimento";
 import FormasDePagamento from "./components/FormasDePagamento";
 import Agendamento from "./components/Agendamento";
-import Depoimentos from "./components/Depoimentos";
+//import Depoimentos from "./components/Depoimentos";
 import Servicos from "./components/Servicos";
 import Galeria from "./components/Galeria";
 import Contato from "./components/Contato";
@@ -16,7 +16,7 @@ export default function Home() {
       <Sobre/>
       <Servicos/>
       <AreaDeAtendimento/>
-      <Depoimentos/>
+      {/*<Depoimentos/>*/}
       <Galeria/>
       <Agendamento/>
       <FormasDePagamento/>
