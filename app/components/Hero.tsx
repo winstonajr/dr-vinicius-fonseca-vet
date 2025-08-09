@@ -100,7 +100,7 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <Image
-            src="/hero01.jpg"
+            src="/hero.jpg"
             alt="Veterinário Vinícius atendendo um adorável pet em casa"
             width={600}
             height={600}
