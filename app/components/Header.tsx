@@ -31,7 +31,7 @@ function Logo({ onClick }: { onClick: (e: React.MouseEvent<HTMLAnchorElement>, h
       whileHover={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
-      <Image src="/icon0.svg" width={50} height={50} alt="Logo Dr. Vinícius Andrade" />
+      <Image src="/logo.png" width={50} height={50} alt="Logo Dr. Vinícius Andrade" />
     </motion.a>
   )
 }

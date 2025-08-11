@@ -66,7 +66,7 @@ export default function Footer() {
           {/* Coluna 1: Logo e Descrição */}
           <motion.div className="space-y-4" variants={itemVariants}>
             <a href="#inicio" onClick={(e) => handleNavClick(e, '#inicio')} className="inline-block">
-              <Image src="/icon0.svg" alt="Logo Dr. Vinícius Andrade" width={60} height={60} />
+              <Image src="/logo.png" alt="Logo Dr. Vinícius Andrade" width={100} height={100} />
             </a>
             <h3 className="text-xl font-bold text-white">Dr. Vinícius Andrade</h3>
             <p className="max-w-xs text-sm leading-relaxed text-[#A0B8C7]">
