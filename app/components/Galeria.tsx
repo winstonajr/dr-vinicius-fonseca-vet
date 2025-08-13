@@ -1,133 +1,27 @@
 'use client'
 
-import 'keen-slider/keen-slider.min.css'
-import { useKeenSlider, KeenSliderPlugin, KeenSliderInstance } from 'keen-slider/react'
+import React from 'react'
 import Image from 'next/image'
-import React, { useState, MutableRefObject } from 'react'
-import { Camera, ChevronLeft, ChevronRight } from 'lucide-react'
-import { motion, Variants } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { Camera } from 'lucide-react'
+import Marquee from 'react-fast-marquee'
 import { urlFor } from '@/sanity/lib/image'
 import { FotoGaleria } from '@/sanity/lib/types'
 
-// --- PLUGINS E ANIMAÇÕES ---
-
-// Plugin para pausar o autoplay quando o mouse está sobre o carrossel
-const AutoplayPlugin: KeenSliderPlugin = (slider) => {
-  let timeout: ReturnType<typeof setTimeout>
-  let mouseOver = false
-  function clearNextTimeout() {
-    clearTimeout(timeout)
-  }
-  function nextTimeout() {
-    clearTimeout(timeout)
-    if (mouseOver) return
-    timeout = setTimeout(() => {
-      slider.next()
-    }, 4000) // Muda de slide a cada 4 segundos
-  }
-  slider.on('created', () => {
-    slider.container.addEventListener('mouseover', () => {
-      mouseOver = true
-      clearNextTimeout()
-    })
-    slider.container.addEventListener('mouseout', () => {
-      mouseOver = false
-      nextTimeout()
-    })
-    nextTimeout()
-  })
-  slider.on('dragStarted', clearNextTimeout)
-  slider.on('animationEnded', nextTimeout)
-  slider.on('updated', nextTimeout)
-}
-
-// Variantes de animação para os elementos
-const itemVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
-}
-
-// --- SUBCOMPONENTES ---
-
-// Componente para as setas de navegação
-function Arrow(props: {
-  disabled?: boolean
-  left?: boolean
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-}) {
-  const disabledClass = props.disabled ? ' opacity-50 cursor-not-allowed' : ''
-  return (
-    <button
-      onClick={props.onClick}
-      disabled={props.disabled}
-      aria-label={props.left ? 'Slide anterior' : 'Próximo slide'}
-      className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[#2A4C68] shadow-md transition hover:bg-white hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#4CAF50] ${
-        props.left ? 'left-4' : 'right-4'
-      } ${disabledClass}`}
-    >
-      {props.left ? <ChevronLeft className="h-6 w-6" /> : <ChevronRight className="h-6 w-6" />}
-    </button>
-  )
-}
-
-// Componente para os pontos de navegação (dots)
-function Dots({
-  instanceRef,
-  currentSlide,
-}: {
-  instanceRef: MutableRefObject<KeenSliderInstance | null>
-  currentSlide: number
-}) {
-  // Acessa os detalhes dos slides da instância do KeenSlider
-  const slides = instanceRef.current?.track.details.slides || []
-  return (
-    <div className="mt-6 flex justify-center gap-2.5">
-      {slides.map((_, idx) => (
-        <button
-          key={idx}
-          onClick={() => instanceRef.current?.moveToIdx(idx)}
-          aria-label={`Ir para o slide ${idx + 1}`}
-          className={`h-3 w-3 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#E9F2F9] focus:ring-[#4CAF50] ${
-            currentSlide === idx ? 'bg-[#2A4C68]' : 'bg-[#CAD8E1]'
-          }`}
-        />
-      ))}
-    </div>
-  )
-}
-
-
 // --- COMPONENTE PRINCIPAL ---
-
-// O componente agora recebe um array de 'images' vindo da Home (que buscou do Sanity)
 export default function Galeria({ images }: { images: FotoGaleria[] }) {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [loaded, setLoaded] = useState(false)
 
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
-    {
-      initial: 0,
-      loop: true,
-      slideChanged: (s) => setCurrentSlide(s.track.details.rel),
-      created: () => setLoaded(true),
-      breakpoints: {
-        '(min-width: 768px)': { slides: { perView: 2, spacing: 16 } },
-        '(min-width: 1024px)': { slides: { perView: 3, spacing: 20 } },
-      },
-      slides: { perView: 1.2, spacing: 12 }, // Mostra um pedaço do próximo slide no mobile
-    },
-    [AutoplayPlugin] // Adiciona o plugin de autoplay inteligente
-  )
-
-  // Se não houver imagens vindas do Sanity, o componente não é renderizado
   if (!images || images.length === 0) {
-    return null;
+    return null
   }
 
+  // MUDANÇA: A constante 'displayImages' foi removida. Não precisamos mais dela.
+
   return (
-    <section id="galeria" className="bg-[#E9F2F9] py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-6 text-center">
+    <section id="galeria" className="bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-0 text-center md:px-6">
         <motion.div
+          className="px-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -142,49 +36,44 @@ export default function Galeria({ images }: { images: FotoGaleria[] }) {
           </p>
         </motion.div>
 
-        <motion.div
-          className="relative mt-16"
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-        >
-          <div ref={sliderRef} className="keen-slider">
+        <div className="mt-16 w-full select-none">
+          <Marquee
+            // MUDANÇA 1: Pausa ao passar o mouse foi desativada.
+            pauseOnHover={false}
+            speed={40}
+            // MUDANÇA 2: 'autoFill' resolve o problema do espaço em branco e da sobreposição.
+            autoFill={true}
+          >
+            {/* Agora mapeamos o array 'images' original */}
             {images.map((image) => (
-              <div key={image._id} className="keen-slider__slide overflow-hidden rounded-2xl">
+              <div
+                key={image._id}
+                className="relative mx-3 h-auto w-64 aspect-[3/4] overflow-hidden rounded-2xl"
+              >
                 <Image
-                  // Usa a função urlFor para gerar a URL otimizada da imagem do Sanity
-                  src={urlFor(image.imagem).width(800).height(600).url()}
-                  alt={image.alt} // Usa a descrição vinda do Sanity
-                  width={800}
-                  height={600}
-                  className="h-full w-full object-cover shadow-lg"
+                  src={urlFor(image.imagem).width(960).height(1280).quality(80).url()}
+                  alt={image.alt}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="h-full w-full object-cover"
                 />
               </div>
             ))}
-          </div>
+          </Marquee>
+        </div>
 
-          {/* As setas e os dots só aparecem depois que o slider for carregado */}
-          {loaded && instanceRef.current && (
-            <>
-              <Arrow
-                onClick={(e) => {
-                  e.stopPropagation()
-                  instanceRef.current?.prev()
-                }}
-                left
-              />
-              <Arrow
-                onClick={(e) => {
-                  e.stopPropagation()
-                  instanceRef.current?.next()
-                }}
-              />
-            </>
-          )}
+        <motion.div
+          className="mt-16 px-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h3 className="text-2xl font-bold text-[#2A4C68]">Seu pet pode ser o próximo!</h3>
+          <p className="mx-auto mt-2 max-w-xl text-base text-[#777]">
+            Cada atendimento é realizado com o máximo de cuidado e carinho. Agende uma consulta e proporcione o melhor para o seu companheiro.
+          </p>
         </motion.div>
-
-        {loaded && instanceRef.current && <Dots instanceRef={instanceRef} currentSlide={currentSlide} />}
       </div>
     </section>
   )
