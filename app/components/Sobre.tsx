@@ -69,7 +69,7 @@ export default function Sobre({ data }: { data: PaginaPrincipalData }) {
         >
           <motion.div variants={itemVariants}>
             <h2 className="text-3xl font-bold text-[#2A4C68] md:text-4xl">
-              Dr. Vinícius Andrade
+              Dr. Vinícius Fonseca
             </h2>
             <p className="mt-1 font-semibold text-[#5C86B5]">
               Médico Veterinário • CRMV-SP: 73773

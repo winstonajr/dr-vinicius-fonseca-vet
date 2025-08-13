@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import { motion, Variants } from "framer-motion"
-import { Dog, PawPrint, Syringe, TestTube2 } from "lucide-react"
+import { PawPrint, Syringe, TestTube2, Plane, Bandage, Droplets } from "lucide-react"
 import { urlFor } from '@/sanity/lib/image'
 import { PaginaPrincipalData } from '@/sanity/lib/types'
 import React from "react"
@@ -11,7 +11,10 @@ const serviceIcons: { icon: React.ElementType; label: string }[] = [
   { icon: PawPrint, label: "Consultas" },
   { icon: Syringe, label: "Vacinas" },
   { icon: TestTube2, label: "Exames" },
-  { icon: Dog, label: "Cães e Gatos" },
+  { icon: Bandage, label: "Curativos" },
+  { icon: Droplets, label: "Fluidoterapia" },
+  // <-- MUDANÇA APLICADA AQUI
+  { icon: Plane, label: "Atestado de Viagem" },
 ]
 
 // --- ANIMAÇÕES ---
@@ -30,11 +33,10 @@ const itemVariants: Variants = {
 
 // --- SUBCOMPONENTES ---
 function ServiceHighlight({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
-  // A animação deste componente agora é controlada pelo `variants` do seu container pai.
   return (
     <div className="flex flex-col items-center gap-2 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-md text-[#5C86B5]">
-        <Icon className="h-7 w-7" />
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-md text-[#5C86B5]">
+        <Icon className="h-8 w-8" />
       </div>
       <span className="text-sm font-medium text-[#777777]">{label}</span>
     </div>
@@ -44,19 +46,19 @@ function ServiceHighlight({ icon: Icon, label }: { icon: React.ElementType; labe
 // --- COMPONENTE PRINCIPAL ---
 export default function Hero({ data }: { data: PaginaPrincipalData }) {
   return (
-    <section id="inicio" className="overflow-hidden bg-[#E9F2F9] py-20 md:py-28">
+    <section id="inicio" className="overflow-hidden bg-[#E9F2F9] pt-24 pb-20 md:pt-24 md:pb-28">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
         
         {/* Coluna de Texto */}
         <motion.div
-          className="flex flex-col items-center text-center md:items-start md:text-left order-2 md:order-1" // <-- MUDANÇA 1: Ordem alterada
+          className="flex flex-col items-center text-center md:items-start md:text-left order-2 md:order-1"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={containerVariants}
         >
           <motion.h1
-            className="font-bold text-3xl text-[#2A4C68] md:text-4xl lg:text-5xl"
+            className="font-extrabold text-4xl text-[#2A4C68] md:text-5xl lg:text-6xl"
             variants={itemVariants}
           >
             Cuidado profissional no conforto do seu lar
@@ -71,7 +73,7 @@ export default function Hero({ data }: { data: PaginaPrincipalData }) {
 
           <motion.div variants={itemVariants} className="mt-8">
             <motion.a
-              className="inline-block rounded-full bg-[#4CAF50] px-8 py-3.5 font-medium text-white shadow-md transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2 focus:ring-offset-[#E9F2F9]"
+              className="inline-block rounded-full bg-[#4CAF50] px-8 py-3.5 font-semibold text-white shadow-lg transition-transform duration-300 hover:scale-105"
               href="https://api.whatsapp.com/send?phone=5513991298550&text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta."
               target="_blank"
               rel="noopener noreferrer"
@@ -81,21 +83,22 @@ export default function Hero({ data }: { data: PaginaPrincipalData }) {
             </motion.a>
           </motion.div>
           
-          {/* MUDANÇA 2: Ícones de serviço movidos para cá */}
-          <motion.div
-            className="mt-12 grid w-full max-w-md grid-cols-2 gap-y-6 gap-x-4 md:grid-cols-4"
-            variants={itemVariants}
-          >
-            {serviceIcons.map((service) => (
-              <ServiceHighlight key={service.label} {...service} />
-            ))}
+          <motion.div className="mt-12 w-full" variants={itemVariants}>
+            <p className="text-sm font-semibold text-[#5C86B5] mb-5">ATENDIMENTO COMPLETO INCLUINDO:</p>
+            <div
+              className="grid grid-cols-3 gap-y-6 gap-x-4 lg:grid-cols-6"
+            >
+              {serviceIcons.map((service) => (
+                <ServiceHighlight key={service.label} {...service} />
+              ))}
+            </div>
           </motion.div>
 
         </motion.div>
 
         {/* Coluna da Imagem */}
         <motion.div
-          className="relative rounded-xl overflow-hidden shadow-xl order-1 md:order-2" // <-- MUDANÇA 1: Ordem alterada
+          className="relative rounded-xl overflow-hidden shadow-xl order-1 md:order-2 md:mb-28"
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.5 }}

@@ -133,7 +133,7 @@ export default function Galeria({ images }: { images: FotoGaleria[] }) {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-4 inline-flex items-center gap-3 rounded-full bg-white px-4 py-2">
+          <div className="mb-4 inline-flex items-center gap-3 rounded-full px-4 py-2">
             <Camera className="h-6 w-6 text-[#2A4C68]" />
             <h2 className="text-2xl font-bold text-[#2A4C68] sm:text-3xl">Nossos Pacientes</h2>
           </div>
