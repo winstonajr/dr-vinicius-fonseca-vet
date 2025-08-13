@@ -2,6 +2,8 @@
 import Image from "next/image"
 import { motion, Variants } from "framer-motion"
 import { Dog, PawPrint, Syringe, TestTube2 } from "lucide-react"
+import { urlFor } from '@/sanity/lib/image'
+import { PaginaPrincipalData } from '@/sanity/lib/types'
 import React from "react"
 
 // --- DADOS E CONSTANTES ---
@@ -40,7 +42,7 @@ function ServiceHighlight({ icon: Icon, label }: { icon: React.ElementType; labe
 }
 
 // --- COMPONENTE PRINCIPAL ---
-export default function Hero() {
+export default function Hero({ data }: { data: PaginaPrincipalData }) {
   return (
     <section id="inicio" className="overflow-hidden bg-[#E9F2F9] py-20 md:py-28">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
@@ -100,7 +102,7 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <Image
-            src="/hero.jpg"
+            src={urlFor(data.imagemHero).width(600).height(600).url()}
             alt="Veterinário Vinícius atendendo um adorável pet em casa"
             width={600}
             height={600}

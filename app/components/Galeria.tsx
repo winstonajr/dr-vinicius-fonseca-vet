@@ -6,16 +6,12 @@ import Image from 'next/image'
 import React, { useState, MutableRefObject } from 'react'
 import { Camera, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, Variants } from 'framer-motion'
-
-// --- DADOS E CONSTANTES ---
-const images = [
-  { src: '/img1.jpg', alt: 'Gato sendo examinado durante consulta domiciliar' },
-  { src: '/img2.jpg', alt: 'Cachorro recebendo cuidado veterinário em casa' },
-  { src: '/img3.jpg', alt: 'Cão sendo examinado durante consulta domiciliar' },
-  { src: '/img4.jpg', alt: 'Veterinário aplicando vacina em um pet' },
-]
+import { urlFor } from '@/sanity/lib/image'
+import { FotoGaleria } from '@/sanity/lib/types'
 
 // --- PLUGINS E ANIMAÇÕES ---
+
+// Plugin para pausar o autoplay quando o mouse está sobre o carrossel
 const AutoplayPlugin: KeenSliderPlugin = (slider) => {
   let timeout: ReturnType<typeof setTimeout>
   let mouseOver = false
@@ -27,7 +23,7 @@ const AutoplayPlugin: KeenSliderPlugin = (slider) => {
     if (mouseOver) return
     timeout = setTimeout(() => {
       slider.next()
-    }, 4000)
+    }, 4000) // Muda de slide a cada 4 segundos
   }
   slider.on('created', () => {
     slider.container.addEventListener('mouseover', () => {
@@ -45,14 +41,17 @@ const AutoplayPlugin: KeenSliderPlugin = (slider) => {
   slider.on('updated', nextTimeout)
 }
 
+// Variantes de animação para os elementos
 const itemVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
 }
 
 // --- SUBCOMPONENTES ---
+
+// Componente para as setas de navegação
 function Arrow(props: {
-  disabled?: boolean // <-- CORREÇÃO 1: 'disabled' agora é opcional.
+  disabled?: boolean
   left?: boolean
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 }) {
@@ -71,6 +70,7 @@ function Arrow(props: {
   )
 }
 
+// Componente para os pontos de navegação (dots)
 function Dots({
   instanceRef,
   currentSlide,
@@ -78,6 +78,7 @@ function Dots({
   instanceRef: MutableRefObject<KeenSliderInstance | null>
   currentSlide: number
 }) {
+  // Acessa os detalhes dos slides da instância do KeenSlider
   const slides = instanceRef.current?.track.details.slides || []
   return (
     <div className="mt-6 flex justify-center gap-2.5">
@@ -95,8 +96,11 @@ function Dots({
   )
 }
 
+
 // --- COMPONENTE PRINCIPAL ---
-export default function Galeria() {
+
+// O componente agora recebe um array de 'images' vindo da Home (que buscou do Sanity)
+export default function Galeria({ images }: { images: FotoGaleria[] }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
 
@@ -110,10 +114,15 @@ export default function Galeria() {
         '(min-width: 768px)': { slides: { perView: 2, spacing: 16 } },
         '(min-width: 1024px)': { slides: { perView: 3, spacing: 20 } },
       },
-      slides: { perView: 1.2, spacing: 12 },
+      slides: { perView: 1.2, spacing: 12 }, // Mostra um pedaço do próximo slide no mobile
     },
-    [AutoplayPlugin]
+    [AutoplayPlugin] // Adiciona o plugin de autoplay inteligente
   )
+
+  // Se não houver imagens vindas do Sanity, o componente não é renderizado
+  if (!images || images.length === 0) {
+    return null;
+  }
 
   return (
     <section id="galeria" className="bg-[#E9F2F9] py-20 md:py-28">
@@ -124,7 +133,7 @@ export default function Galeria() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-4 inline-flex items-center gap-3 rounded-full px-4 py-2">
+          <div className="mb-4 inline-flex items-center gap-3 rounded-full bg-white px-4 py-2">
             <Camera className="h-6 w-6 text-[#2A4C68]" />
             <h2 className="text-2xl font-bold text-[#2A4C68] sm:text-3xl">Nossos Pacientes</h2>
           </div>
@@ -141,11 +150,12 @@ export default function Galeria() {
           viewport={{ once: true, amount: 0.1 }}
         >
           <div ref={sliderRef} className="keen-slider">
-            {images.map(({ src, alt }, index) => (
-              <div key={index} className="keen-slider__slide overflow-hidden rounded-2xl">
+            {images.map((image) => (
+              <div key={image._id} className="keen-slider__slide overflow-hidden rounded-2xl">
                 <Image
-                  src={src}
-                  alt={alt}
+                  // Usa a função urlFor para gerar a URL otimizada da imagem do Sanity
+                  src={urlFor(image.imagem).width(800).height(600).url()}
+                  alt={image.alt} // Usa a descrição vinda do Sanity
                   width={800}
                   height={600}
                   className="h-full w-full object-cover shadow-lg"
@@ -154,9 +164,9 @@ export default function Galeria() {
             ))}
           </div>
 
+          {/* As setas e os dots só aparecem depois que o slider for carregado */}
           {loaded && instanceRef.current && (
             <>
-              {/* CORREÇÃO 2: A lógica do onClick foi reescrita */}
               <Arrow
                 onClick={(e) => {
                   e.stopPropagation()

@@ -1,6 +1,8 @@
 "use client"
 import { motion, Variants } from "framer-motion"
 import { BadgeCheck } from "lucide-react"
+import { urlFor } from '@/sanity/lib/image'
+import { PaginaPrincipalData } from '@/sanity/lib/types'
 import Image from "next/image"
 import React from "react"
 
@@ -33,7 +35,7 @@ const imageVariants: Variants = {
 
 
 // --- COMPONENTE PRINCIPAL ---
-export default function Sobre() {
+export default function Sobre({ data }: { data: PaginaPrincipalData }) {
   return (
     <section id="sobre" className="overflow-x-hidden bg-white py-20 md:py-28">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
@@ -48,7 +50,7 @@ export default function Sobre() {
         >
           <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-br from-[#5C86B5] to-[#2A4C68] opacity-20 blur-xl transition duration-500 group-hover:opacity-40"></div>
           <Image
-            src="/sobre01.jpg"
+            src={urlFor(data.imagemSobre).width(500).height(500).url()}
             alt="Foto de perfil do Dr. Vinícius Andrade da Fonseca João"
             width={500}
             height={500}
