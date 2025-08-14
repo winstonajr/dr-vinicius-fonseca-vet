@@ -11,7 +11,7 @@ const poppins = Poppins({
 const siteConfig = {
   title: "Dr. Vinícius Fonseca | Veterinário em Domicílio na Baixada Santista",
   description: "Atendimento veterinário profissional para cães e gatos em Santos, São Vicente, Praia Grande e Cubatão. Consultas, vacinas, exames e mais, no conforto do seu lar.",
-  url: "https://viniciusfonseca.vercel.app", // <-- Lembrete: Troque pela URL final do site
+  url: "https://www.viniciusfonseca.vercel.app", // <-- Lembrete: Troque pela URL final do site
   author: "Dr. Vinícius Andrade da Fonseca João",
   keywords: "veterinário em domicílio, veterinário baixada santista, veterinário santos, veterinário são vicente, veterinário praia grande, veterinário cubatão, consulta veterinária em casa, vacina para pet em casa",
 };
