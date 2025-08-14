@@ -11,23 +11,18 @@ const poppins = Poppins({
 const siteConfig = {
   title: "Dr. Vinícius Fonseca | Veterinário em Domicílio na Baixada Santista",
   description: "Atendimento veterinário profissional para cães e gatos em Santos, São Vicente, Praia Grande e Cubatão. Consultas, vacinas, exames e mais, no conforto do seu lar.",
-  url: "https://www.drviniciusfonseca.vet.br", // IMPORTANTE: Troque pela URL final do site
+  url: "https://www.drviniciusandrade.com.br", // <-- Lembrete: Troque pela URL final do site
   author: "Dr. Vinícius Andrade da Fonseca João",
   keywords: "veterinário em domicílio, veterinário baixada santista, veterinário santos, veterinário são vicente, veterinário praia grande, veterinário cubatão, consulta veterinária em casa, vacina para pet em casa",
 };
 
 export const metadata: Metadata = {
-  // Informações básicas
   metadataBase: new URL(siteConfig.url),
   title: siteConfig.title,
   description: siteConfig.description,
-  
-  // Palavras-chave
   keywords: siteConfig.keywords,
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
-
-  // Robôs de busca
   robots: {
     index: true,
     follow: true,
@@ -39,8 +34,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  
-  // Open Graph (para compartilhamento em redes sociais como Facebook, WhatsApp)
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
@@ -48,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "Dr. Vinícius Andrade | Veterinário Domiciliar",
     images: [
       {
-        url: '/og-image.png', // Crie uma imagem de 1200x630px e coloque na pasta /public
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Dr. Vinícius Andrade atendendo um pet em casa.',
@@ -57,13 +50,11 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     type: 'website',
   },
-
-  // Twitter Card (para compartilhamento no Twitter/X)
   twitter: {
     card: 'summary_large_image',
     title: siteConfig.title,
     description: siteConfig.description,
-    images: ['/og-image.png'], // A mesma imagem do Open Graph
+    images: ['/og-image.png'],
   },
 };
 
@@ -75,7 +66,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="!scroll-smooth">
       <head>
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -84,7 +74,7 @@ export default function RootLayout({
             "name": "Dr. Vinícius Andrade - Atendimento Veterinário Domiciliar",
             "description": siteConfig.description,
             "url": siteConfig.url,
-            "telephone": "+5513991298550", // Use o formato internacional
+            "telephone": "+5513991298550",
             "image": `${siteConfig.url}/og-image.png`,
             "address": {
               "@type": "PostalAddress",
