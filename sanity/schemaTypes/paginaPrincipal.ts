@@ -13,9 +13,23 @@ export default defineType({
       readOnly: true,
     }),
     defineField({
+      name: 'seoTitle',
+      title: 'Título do Site (SEO)',
+      description: 'Este é o título que aparecerá na aba do navegador e nos resultados do Google. (Ex: Dr. Vinícius Fonseca | Veterinário em Domicílio)',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'Descrição do Site (SEO)',
+      description: 'Um resumo conciso do site para o Google e para compartilhamento em redes sociais. (Máximo de 160 caracteres)',
+      type: 'text',
+      rows: 3,
+      validation: (Rule) => Rule.required().max(160),
+    }),
+    defineField({
       name: 'imagemHero',
       title: 'Imagem do Topo (Hero)',
-      description: 'A primeira imagem que aparece no site. Recomendação: foto de um atendimento.',
       type: 'image',
       options: {hotspot: true},
       validation: (Rule) => Rule.required(),
@@ -23,8 +37,6 @@ export default defineType({
     defineField({
       name: 'imagemSobre',
       title: 'Foto de Perfil (Seção Sobre)',
-      description:
-        'Sua foto de perfil que aparece na seção "Sobre". Recomendação: um retrato profissional e amigável.',
       type: 'image',
       options: {hotspot: true},
       validation: (Rule) => Rule.required(),

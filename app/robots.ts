@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  // IMPORTANTE: Troque pela URL final do site
-  const siteUrl = 'https://www.seusite.com.br';
+  const siteUrl = 'https://www.xn--vinciusfonseca-znb.vet.br';
 
   return {
     rules: {

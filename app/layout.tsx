@@ -1,67 +1,54 @@
-import type { Metadata } from "next";
-import { Poppins } from 'next/font/google';
-import "./globals.css";
+import type { Metadata } from "next"
+import { Poppins } from 'next/font/google'
+import "./globals.css"
+import { siteConfig } from "@/config/site"
 
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800']
-});
-
-// --- SEO AVANÇADO ---
-const siteConfig = {
-  title: "Dr. Vinícius Fonseca | Veterinário em Domicílio na Baixada Santista",
-  description: "Atendimento veterinário profissional para cães e gatos em Santos, São Vicente, Praia Grande e Cubatão. Consultas, vacinas, exames e mais, no conforto do seu lar.",
-  url: "https://viniciusfonseca.vercel.app", // <-- Lembrete: Troque pela URL final do site
-  author: "Dr. Vinícius Andrade da Fonseca João",
-  keywords: "veterinário em domicílio, veterinário baixada santista, veterinário santos, veterinário são vicente, veterinário praia grande, veterinário cubatão, consulta veterinária em casa, vacina para pet em casa",
-};
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: siteConfig.title,
-  description: siteConfig.description,
+  title: {
+    default: `${siteConfig.name} | Veterinário em Domicílio na Baixada Santista`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: "Evite o estresse de levar seu pet à clínica. Dr. Vinícius oferece consultas, vacinas, exames e todo o cuidado veterinário necessário na segurança e conforto da sua casa na Baixada Santista.",
   keywords: siteConfig.keywords,
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
   openGraph: {
-    title: siteConfig.title,
-    description: siteConfig.description,
+    type: 'website',
+    locale: 'pt_BR',
     url: siteConfig.url,
-    siteName: "Dr. Vinícius Andrade | Veterinário Domiciliar",
+    title: `${siteConfig.name} | Veterinário em Domicílio`,
+    description: "Atendimento veterinário profissional para cães e gatos, no conforto e segurança do seu lar.",
     images: [
       {
-        url: '/og-image.png',
+        url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: 'Dr. Vinícius Andrade atendendo um pet em casa.',
+        alt: `Imagem de apresentação de ${siteConfig.name}`,
       },
     ],
-    locale: 'pt_BR',
-    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
-    images: ['/og-image.png'],
+    title: `${siteConfig.name} | Veterinário em Domicílio`,
+    description: "Atendimento veterinário profissional para cães e gatos, no conforto e segurança do seu lar.",
+    images: [siteConfig.ogImage],
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="pt-BR" className="!scroll-smooth">
@@ -71,11 +58,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "VeterinaryCare",
-            "name": "Dr. Vinícius Andrade - Atendimento Veterinário Domiciliar",
-            "description": siteConfig.description,
+            "name": "Dr. Vinícius Fonseca - Atendimento Veterinário Domiciliar",
+            "description": "Atendimento veterinário profissional para cães e gatos em Santos, São Vicente, Praia Grande e Cubatão.",
             "url": siteConfig.url,
             "telephone": "+5513991298550",
-            "image": `${siteConfig.url}/og-image.png`,
+            "image": `${siteConfig.url}${siteConfig.ogImage}`,
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "São Vicente",
@@ -99,5 +86,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  );
+  )
 }
