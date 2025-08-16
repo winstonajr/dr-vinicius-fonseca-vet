@@ -41,5 +41,5 @@ Este projeto foi construído com as seguintes tecnologias de ponta:
 
 Projeto desenvolvido por **WinstonAjr**.
 
-* GitHub: [@seu-usuario](https://github.com/winstonajr)
+* GitHub: [@winstonajr](https://github.com/winstonajr)
 * LinkedIn: [/in/seu-linkedin](https://linkedin.com/in/winstonajr)
