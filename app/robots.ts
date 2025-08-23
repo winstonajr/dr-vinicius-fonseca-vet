@@ -1,14 +1,14 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = 'https://www.xn--vinciusfonseca-znb.vet.br';
+  const siteUrl = "https://www.drviníciusfonseca.vet.br/";
 
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: '/admin/',
+      userAgent: "*",
+      allow: "/",
+      disallow: "/admin/",
     },
     sitemap: `${siteUrl}/sitemap.xml`,
-  }
+  };
 }
